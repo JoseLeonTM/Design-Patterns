@@ -2,13 +2,12 @@
  * Created by Jose Leon on 5/3/2016.
  */
 
-
 window.onload=function(){
-    var text=document.querySelector("#listOfWords");  //////////////GET THE PARAGRAPH ELEMENT
-    var filterWord=document.querySelector("#filter");////////////////GET THE TEXT FROM THE INPUT ELEMENT
-    var words=require('ListOfWords').srcText;
     var Presenter=(function(){
-        function reset(srcText){
+        var text=document.querySelector("#listOfWords");  //////////////GET THE PARAGRAPH ELEMENT
+        var filterWord=document.querySelector("#filter");////////////////GET THE TEXT FROM THE INPUT ELEMENT
+        var words=require('ListOfWords').srcText; ///////////GET THE LIST OF WORDS FROM REQUIRE.JS
+        function reset(){
             text.textContent=words.join(", ");
         }
         return {
