@@ -31,8 +31,6 @@ label{
 }
 canvas{
     display: inline-block;
-    /*width: 500px;*/
-    /*height:50%;*/
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     margin:20px;
