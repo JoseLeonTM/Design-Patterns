@@ -11,15 +11,18 @@
 <div id="container">
     <form>
         <label>
-            <input type="radio" name="figure" value="rectangle" checked="checked" />Rectangle
+            <input type="radio" name="figure" value="rectangle" checked="checked"/>Rectangle
         </label>
-        <input type="checkbox" name="figure" value="square"  />square
-        <!--<label>-->
-            <!--<input type="radio" name="figure" value="square"/>Square-->
-        <!--</label>-->
+        <label>
+            <input type="radio" name="figure" value="square" />Square
+        </label>
+        <label>
+            <input type="radio" name="figure" value="circle" />Circle
+        </label>
     </form>
-    <canvas id="canvas"></canvas>
+    <canvas id="draggingCanvas" width="600" height="500"></canvas>
+    <canvas id="canvas" width="600" height="500"></canvas>
 </div>
 </body>
-<script type="text/javascript" src="Exercise2.js"></script>
+<script type="text/javascript" src="Figures.js"></script>
 </html>

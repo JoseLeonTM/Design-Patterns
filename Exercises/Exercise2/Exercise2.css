@@ -29,10 +29,15 @@ form{
 label{
     display: block;
 }
-canvas{
-    display: inline-block;
+#canvas{
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     margin:20px;
-    float:left;
+}
+#draggingCanvas{
+    border-radius: 10px;
+    position:absolute;
+    margin:20px;
+    /*display:none;*/
+    /*box-shadow: 0 0 10px rgba(255,0,0,0.8);*/
 }

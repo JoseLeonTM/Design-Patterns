@@ -3,6 +3,7 @@
  */
 
 window.onload=function(){
+    //var filter = document.querySelector("#filter");
     var Presenter=(function(){
         var text=document.querySelector("#listOfWords");  //////////////GET THE PARAGRAPH ELEMENT
         var filterWord=document.querySelector("#filter");////////////////GET THE TEXT FROM THE INPUT ELEMENT
@@ -14,7 +15,7 @@ window.onload=function(){
             filter: function () {
                 if (filterWord.value!="") {
                     var newText = "";
-                    var srcText = words;
+                    var srcText = words;  ///\b[\w]*filter[\w]*\b/
                     var filter = filterWord.value.trim();
                     for (var i = 0; i < srcText.length; i++) {
                             if (srcText[i].match(filter)) {
