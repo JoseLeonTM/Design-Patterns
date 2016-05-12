@@ -1,7 +1,7 @@
 /**
  * Created by Jose Leon on 5/11/2016.
  */
-var canvas=(function(){
+define(['Figures'],function(Figures){
     var figureHolder =document.querySelector('#canvas');
     var drawC= figureHolder.getContext('2d'); ////////////////THE CANVAS CONTEXT
     drawC.fillStyle = "rgba(0,0,0,0.4)"; ///////////////////SET THE COLOR FOR THE FIGURES
@@ -18,11 +18,10 @@ var canvas=(function(){
     var drag=null; ////////////THE REFERENCE TO THE FIGURE THAT IS BEING DRAGGED
 
     var figureBuilder={ ////////////THE OBJECT THAT WE USE TO BUILD THE RIGHT TYPE OF FIGURE
-        rectangle:Rectangle,
-        square:Square,
-        circle:Circle
+        rectangle:Figures.Rectangle,
+        square:Figures.Square,
+        circle:Figures.Circle
     };
-
     var chosenFigure; ////HOLDS THE VAlUE OF THE SELECTED FIGURE IN THE INTERFACE
     chooseFigure();
 
@@ -31,7 +30,6 @@ var canvas=(function(){
 
     function chooseFigure(e){///////////////////////////CHANGES THE VALUE OF chosenFigure TO THE SELECTED FIGURE
         if (e) {
-            console.log(e.target);
             if (e.target.name == 'figure') chosenFigure=e.target.value;
         }
         else {
@@ -49,9 +47,9 @@ var canvas=(function(){
     }
     function checkForFigures(x,y){////////////////////RETURNS THE INDEX OF THE figures ARRAY IF THERE IS A FIGURE IN THE POSITION
         //var exists;
-        if(figures[0]) {
-            for (var i = figures.length - 1; i >= 0; i--) {
-                if (figures[i].check(x, y)) return i;
+        if(Figures.figures[0]) {
+            for (var i = Figures.figures.length - 1; i >= 0; i--) {
+                if (Figures.figures[i].check(x, y)) return i;
             }
         }
     }
@@ -61,7 +59,12 @@ var canvas=(function(){
         var y= e.pageY-(figureHolder.offsetTop-figureHolder.scrollTop);
         var existing=checkForFigures(x,y);
         if(existing!=undefined){
-            drag=figures[existing].drag(existing);
+            drag=Figures.figures.splice(existing, 1)[0];
+            drag.draw(dragC);
+            drawC.clearRect(0,0,600,500);
+            for (var i = 0; i < Figures.figures.length; i++) {
+                    Figures.figures[i].draw(drawC);
+                }
         }
     }
     function clickDrag(e){
@@ -84,25 +87,17 @@ var canvas=(function(){
         if(drag) {
             dragC.clearRect(0, 0, 600, 500);
             drag.draw(drawC);
-            figures.push(drag);
+            Figures.figures.push(drag);
             drag = null;
         }
         var x = e.pageX - (figureHolder.offsetLeft - figureHolder.scrollLeft);
         var y = e.pageY - (figureHolder.offsetTop - figureHolder.scrollTop);
-        if(checkForFigures(x,y)==undefined) {
+        if(checkForFigures(x,y)==undefined && x<600 && x>0 && y<500 && y>0) {
             var figure = newFigure(x,y);  /////////////////////GETTING THE CHOSEN FIGURE
             //figure.draw(figure);
             figure.draw(drawC);
-            figures.push(figure); /////////ADD THE DRAWN FIGURE TO THE ARRAY
+            Figures.figures.push(figure); /////////ADD THE DRAWN FIGURE TO THE ARRAY
         }
     }
     ////////////END OF EVENT HANDLING FUNCTIONS/////////////////////////
-    return {
-        drawC:drawC,
-        dragC:dragC
-        //chosenFigure:chosenFigure,
-        //drag:drag
-        //newFigure:newFigure,
-        //checkForFigures:checkForFigures
-    }
-})();
+});
