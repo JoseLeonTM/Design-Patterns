@@ -3,29 +3,29 @@
  */
 
 
-var canvas= document.querySelector('#canvas'); ////////THE CANVAS ELEMENT
-var ctx = canvas.getContext('2d'); ////////////////THE CANVAS CONTEXT
-ctx.fillStyle = "rgba(0,0,0,0.4)"; ///////////////////SET THE COLOR FOR THE FIGURES
+//var canvas= document.querySelector('#canvas'); ////////THE CANVAS ELEMENT
+//var ctx = canvas.getContext('2d'); ////////////////THE CANVAS CONTEXT
+//ctx.fillStyle = "rgba(0,0,0,0.4)"; ///////////////////SET THE COLOR FOR THE FIGURES
+//
+//var draggingCanvas=document.querySelector('#draggingCanvas');///////////////THE CANVAS USED TO DRAG FIGURES AROUND
+//draggingCanvas.addEventListener('mousedown',clickDown,false);////////////ADD A CLICK EVENT TO THE CANVAS ON TOP
+//draggingCanvas.addEventListener('mousemove',clickDrag,false);////////////ADD A CLICK EVENT TO THE CANVAS ON TOP
+//draggingCanvas.addEventListener('mouseup',clickUp,false);////////////ADD A CLICK EVENT TO THE CANVAS ON TOP
+//var draggingCtx=draggingCanvas.getContext('2d');/////////DRAWING CONTEXT FOR CANVAS ON TOP
+//draggingCtx.fillStyle = "rgba(0,0,200,0.4)"; ///////////////////SET THE COLOR FOR THE FIGURES ON THE DRAGGING CANVAS
 
-var draggingCanvas=document.querySelector('#draggingCanvas');///////////////THE CANVAS USED TO DRAG FIGURES AROUND
-draggingCanvas.addEventListener('mousedown',clickDown,false);////////////ADD A CLICK EVENT TO THE CANVAS ON TOP
-draggingCanvas.addEventListener('mousemove',clickDrag,false);////////////ADD A CLICK EVENT TO THE CANVAS ON TOP
-draggingCanvas.addEventListener('mouseup',clickUp,false);////////////ADD A CLICK EVENT TO THE CANVAS ON TOP
-var draggingCtx=draggingCanvas.getContext('2d');/////////DRAWING CONTEXT FOR CANVAS ON TOP
-draggingCtx.fillStyle = "rgba(0,0,200,0.4)"; ///////////////////SET THE COLOR FOR THE FIGURES ON THE DRAGGING CANVAS
-
-var drag=null;
+//var drag=null;
 var figures=[]; //////////////////AN ARRAY WITH THE EXISTING FIGURES
 
-var form=document.querySelector('form');
-form.addEventListener('click',chooseFigure,false);
-var chosenFigure=chooseFigure();
+//var form=document.querySelector('form');
+//form.addEventListener('click',chooseFigure,false);
+//var chosenFigure=chooseFigure();
 
-var figureBuilder={
-    rectangle:Rectangle,
-    square:Square,
-    circle:Circle
-};
+//var figureBuilder={
+//    rectangle:Rectangle,
+//    square:Square,
+//    circle:Circle
+//};
 /////////////////////////////FIGURE CONSTRUCTORS////////////////////////////
 function Figure(x,y){
     this.origX=x;
@@ -50,6 +50,7 @@ Rectangle.prototype.check=function(x,y) {
         return this;
 };
 Square.prototype.draw=function(ctx) {
+    console.log(this);
     ctx.fillRect(this.origX - 30, this.origY - 30, 60, 60);
 };
 Square.prototype.check=function(x,y) {
@@ -67,11 +68,11 @@ Circle.prototype.check=function(x,y) {
 };
 Figure.prototype.drag=function (index){
     var dragFigure=figures.splice(index,1)[0];
-    ctx.clearRect(0,0,600,500);
+    canvas.drawC.clearRect(0,0,600,500);
     for(var i=0;i<figures.length;i++){
-        figures[i].draw(ctx);
+        figures[i].draw(canvas.drawC);
     }
-    dragFigure.draw(draggingCtx);
+    dragFigure.draw(canvas.dragC);
     return dragFigure;
     //dragFigure.drag=true;
     //dragFigure.draw(draggingCtx);
@@ -79,31 +80,31 @@ Figure.prototype.drag=function (index){
 };
 ///////////////////////END OF FIGURE CONSTRUCTORS/////////////////////////
 
-function chooseFigure(e){///////////////////////////CHECK WHICH FIGURE HAS BEEN SELECTED TO CREATE
-    if (e) {
-        if (e.target.name == 'figure') chosenFigure = e.target.value;
-    }
-    else {
-        var figures = document.getElementsByTagName('input');
-        for(var i=0;i<figures.length;i++){
-            if(figures[i].checked) return figures[i].value;
-        }
-    }
-}
-function newFigure(x,y){
-    var figure =new figureBuilder[chosenFigure];
-    figure.origX=x;
-    figure.origY=y;
-    return figure;
-}
-function checkForFigures(x,y){
-    //var exists;
-    if(figures[0]) {
-        for (var i = figures.length - 1; i >= 0; i--) {
-            if (figures[i].check(x, y)) return i;
-        }
-    }
-}
+//function chooseFigure(e){///////////////////////////CHECK WHICH FIGURE HAS BEEN SELECTED TO CREATE
+//    if (e) {
+//        if (e.target.name == 'figure') chosenFigure = e.target.value;
+//    }
+//    else {
+//        var figures = document.getElementsByTagName('input');
+//        for(var i=0;i<figures.length;i++){
+//            if(figures[i].checked) return figures[i].value;
+//        }
+//    }
+//}
+//function newFigure(x,y){
+//    var figure =new figureBuilder[chosenFigure];
+//    figure.origX=x;
+//    figure.origY=y;
+//    return figure;
+//}
+//function checkForFigures(x,y){
+//    //var exists;
+//    if(figures[0]) {
+//        for (var i = figures.length - 1; i >= 0; i--) {
+//            if (figures[i].check(x, y)) return i;
+//        }
+//    }
+//}
 //function clickDown(e){
 //    var x= e.pageX-(canvas.offsetLeft-canvas.scrollLeft);
 //    var y= e.pageY-(canvas.offsetTop-canvas.scrollTop);
