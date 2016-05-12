@@ -18,6 +18,9 @@ define(['Figures'],function(Figures){
     var drag=null; ////////////THE REFERENCE TO THE FIGURE THAT IS BEING DRAGGED
 
     var figureBuilder={ ////////////THE OBJECT THAT WE USE TO BUILD THE RIGHT TYPE OF FIGURE
+        build:function(figure){
+            return new this[figure];
+        },
         rectangle:Figures.Rectangle,
         square:Figures.Square,
         circle:Figures.Circle
@@ -40,7 +43,7 @@ define(['Figures'],function(Figures){
         }
     }
     function newFigure(x,y){////////////////////////////RETURNS A NEW FIGURE/////////////////
-        var figure =new figureBuilder[chosenFigure];
+        var figure = figureBuilder.build(chosenFigure);
         figure.origX=x;
         figure.origY=y;
         return figure;
