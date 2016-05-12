@@ -14,11 +14,14 @@
     };
      var drop =function(ev) {
         ev.preventDefault();
+        storeChanges();
         document.querySelector('#containerCommand').appendChild(document.getElementById(ev.dataTransfer.getData("text")));
     };
-    var apply = document.getElementById('apply');
-    apply.addEventListener('click',storeChanges,false);
-    var container=document.getElementById('containerCommand');
+var apply = document.getElementById('apply');
+apply.addEventListener('click',storeChanges,false);
+var undo=document.querySelector('#undo');
+undo.addEventListener('click',undoChanges,false);
+var container=document.getElementById('containerCommand');
 
     function storeChanges(){
         changes.push({
@@ -27,19 +30,21 @@
             bordRadius:document.getElementById('borderRADIUS').value+"px",
             backColor:document.getElementById('backgroundCOLOR').value
         });
-
+        applyChanges();
     }
-    function editDivs(){
-        var bordColor=document.getElementById('borderCOLOR').value;
-        var bordWidth=document.getElementById('borderWIDTH').value+"px";
-        var bordRadius=document.getElementById('borderRADIUS').value+"px";
-        var backColor=document.getElementById('backgroundCOLOR').value;
+    function undoChanges(){
+        changes.splice(changes.length-1,1);
+        applyChanges();
+    }
+    function applyChanges(){
+        var change= changes[changes.length-1];
+
         var children=container.querySelectorAll('div');
         for(var i=0; i<children.length;i++) {
-            children[i].style.borderColor = bordColor;
-            children[i].style.borderWidth = bordWidth;
-            children[i].style.borderRadius = bordRadius;
-            children[i].style.backgroundColor = backColor;
+            children[i].style.borderColor = change.bordColor;
+            children[i].style.borderWidth = change.bordWidth;
+            children[i].style.borderRadius = change.bordRadius;
+            children[i].style.backgroundColor = change.backColor;
         }
     }
 //}
