@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../reset.css">
+    <link rel="stylesheet" type="text/css" href="Exercise3.css"/>
+    <title>Div Editor</title>
+</head>
+<body>
+<h1>Div Editor</h1>
+    <div id="containerLeft" class="dragHolder" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div id="subject1" draggable="true" ondragstart="drag(event)">1</div>
+        <div id="subject2" draggable="true" ondragstart="drag(event)">2</div>
+        <div id="subject3" draggable="true" ondragstart="drag(event)">3</div>
+        <div id="subject4" draggable="true" ondragstart="drag(event)">4</div>
+    </div>
+    <div id="containerCommand" class="dragHolder" ondrop="drop(event)" ondragover="allowDrop(event)">
+    </div>
+    <div id="controllers">
+        <div>
+            <label>Border</label>
+            <input type="color" id="borderCOLOR" value="#000000"/>
+        </div>
+        <div>
+            <label>Background</label>
+            <input type="color" id="backgroundCOLOR" value="#FFFFFF"/>
+        </div>
+        <label>Border Width</label>
+        <input type="range" value="1" min="1" max="10" id="borderWIDTH" class="range"/>
+        <label>Border Radius</label>
+        <input type="range" value="0" min="0" max="50" id="borderRADIUS" class="range"/>
+        <button id="apply">Apply</button>
+        <button id="undo">Undo</button>
+    </div>
+    <div id="macros">
+
+    </div>
+</body>
+<script type="text/javascript" src="Exercise3.js"></script>
+</html>
