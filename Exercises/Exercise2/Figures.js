@@ -6,19 +6,28 @@
 define(function() {
         var figures = []; //////////////////AN ARRAY WITH THE EXISTING FIGURES
 
-        function Figure(x, y) {
+        //function Figure(x, y) {
+        //    this.origX = x;
+        //    this.origY = y;
+        //}
+        function Rectangle(x,y) {
             this.origX = x;
             this.origY = y;
         }
-        function Rectangle() {}
-        function Square(){}
-        function Circle(){}
-        Rectangle.prototype = Object.create(Figure.prototype);///////////////INHERITANCE FOR ALL FIGURES
-        Rectangle.prototype.constructor = Rectangle;
-        Square.prototype = Object.create(Figure.prototype);
-        Square.prototype.constructor = Square;
-        Circle.prototype = Object.create(Figure.prototype);
-        Circle.prototype.constructor = Circle;
+        function Square(x,y){
+            this.origX = x;
+            this.origY = y;
+        }
+        function Circle(x,y){
+            this.origX = x;
+            this.origY = y;
+        }
+        //Rectangle.prototype = Object.create(Figure.prototype);///////////////INHERITANCE FOR ALL FIGURES
+        //Rectangle.prototype.constructor = Rectangle;
+        //Square.prototype = Object.create(Figure.prototype);
+        //Square.prototype.constructor = Square;
+        //Circle.prototype = Object.create(Figure.prototype);
+        //Circle.prototype.constructor = Circle;
 
 ///////////////PROTOTYPE METHODS FOR EACH FIGURE////////////////////
         Rectangle.prototype.draw = function (ctx) {
