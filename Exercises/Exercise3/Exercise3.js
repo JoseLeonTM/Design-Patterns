@@ -14,7 +14,7 @@
     };
      var drop =function(ev) {
         ev.preventDefault();
-        storeChanges();
+        //storeChanges();
         document.querySelector('#containerCommand').appendChild(document.getElementById(ev.dataTransfer.getData("text")));
     };
 var apply = document.getElementById('apply');
@@ -23,7 +23,8 @@ var undo=document.querySelector('#undo');
 undo.addEventListener('click',undoChanges,false);
 var container=document.getElementById('containerCommand');
 
-    function storeChanges(){
+    function storeChanges(e){
+        console.log(e.target);
         changes.push({
             bordColor:document.getElementById('borderCOLOR').value,
             bordWidth:document.getElementById('borderWIDTH').value+"px",
