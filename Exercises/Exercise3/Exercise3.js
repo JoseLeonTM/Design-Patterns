@@ -2,10 +2,28 @@
  * Created by Jose Leon on 5/12/2016.
  */
 
-//function dragableDivs(){
     //////////////////////////////////////////////DRAG FUNCTIONS////////////////////////////////////////
-    var changes=[];
-
+    var stored=[];///////WHERE EVERY CHANGE WILL BE STORED
+//(function(){////////STORE THE FIRST STATE OF EVERY DIV AT THE BEGINNING
+//    var leftContainer=document.getElementById('containerLeft');
+//    for(var i=0; i<leftContainer.childElementCount;i++){
+//        var child = leftContainer.children[i];
+//        stored.push([{
+//            bordColor:child.style.borderColor,
+//            bordWidth:child.style.borderWidth,
+//            bordRadius:child.style.borderRadius,
+//            backColor:child.style.backgroundColor
+//        }]);
+//    }
+//})();
+var cCommands=document.getElementById('containerCommand'); ///////////////CONTAINER COMMAND REFERENCE
+var cLeft=document.getElementById('containerLeft'); ///////////////CONTAINER COMMAND REFERENCE
+//var apply = document.getElementById('apply');//////APPLY BUTTON//////////////
+//apply.addEventListener('click',bindChanges('applyChanges'),false);
+var undo=document.querySelector('#undo');//////UNDO BUTTON////////////
+undo.addEventListener('click',bindChanges('undoChanges'),false);
+document.body.addEventListener('mouseDown',checkAction,false);
+///////////DRAGGING FUNCTIONS////////////////////
     var allowDrop= function(ev) {
         ev.preventDefault();
     };
@@ -14,38 +32,52 @@
     };
      var drop =function(ev) {
         ev.preventDefault();
-        //storeChanges();
-        document.querySelector('#containerCommand').appendChild(document.getElementById(ev.dataTransfer.getData("text")));
+         if((ev.target==cCommands || ev.target.parentNode==cCommands) && cCommands.childElementCount==0){
+             cCommands.appendChild(document.getElementById(ev.dataTransfer.getData("text")));
+         }
+         else{
+             cLeft.appendChild(document.getElementById(ev.dataTransfer.getData("text")));
+         }
     };
-var apply = document.getElementById('apply');
-apply.addEventListener('click',storeChanges,false);
-var undo=document.querySelector('#undo');
-undo.addEventListener('click',undoChanges,false);
-var container=document.getElementById('containerCommand');
+////////END OF DRAGGING FUNCTIONS//////////////////
 
-    function storeChanges(e){
-        console.log(e.target);
-        changes.push({
-            bordColor:document.getElementById('borderCOLOR').value,
-            bordWidth:document.getElementById('borderWIDTH').value+"px",
-            bordRadius:document.getElementById('borderRADIUS').value+"px",
-            backColor:document.getElementById('backgroundCOLOR').value
-        });
-        applyChanges();
-    }
-    function undoChanges(){
-        changes.splice(changes.length-1,1);
-        applyChanges();
-    }
-    function applyChanges(){
-        var change= changes[changes.length-1];
 
-        var children=container.querySelectorAll('div');
-        for(var i=0; i<children.length;i++) {
+function checkAction(e){
+    console.log("wf");
+    console.log(e.target);
+    //if(e.target.draggable){
+
+    //}
+}
+function bindChanges(method){
+
+}
+var changes= {
+    storeChanges:function(e){
+    console.log(e.target);
+    changes.push({
+        bordColor: document.getElementById('borderCOLOR').value,
+        bordWidth: document.getElementById('borderWIDTH').value + "px",
+        bordRadius: document.getElementById('borderRADIUS').value + "px",
+        backColor: document.getElementById('backgroundCOLOR').value
+    });
+    applyChanges();
+    },
+    undoChanges: function() {
+        if (changes.length > 1){
+            changes.splice(changes.length - 1, 1);
+            applyChanges();
+        }
+    },
+    applyChanges: function(){
+        var change = changes[changes.length - 1];
+
+        var children = container.querySelectorAll('div');
+        for (var i = 0; i < children.length; i++) {
             children[i].style.borderColor = change.bordColor;
             children[i].style.borderWidth = change.bordWidth;
             children[i].style.borderRadius = change.bordRadius;
             children[i].style.backgroundColor = change.backColor;
         }
     }
-//}
+};

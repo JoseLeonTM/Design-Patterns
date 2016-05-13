@@ -7,12 +7,12 @@ body{
 body > div{
     border:3px solid white;
     box-shadow: 0 0 10px rgba(255,255,255,0.4);
-    border-radius: 20px 0 0 0;
+    /*border-radius: 20px 0 0 0;*/
 }
 h1{
     font-size: 3em;
     font-family: fantasy;
-    margin:10px 0 0 20px;
+    margin:10px 0 10px 20px;
     border: 5px solid white;
     border-radius: 50px 0 50px 0;
     width:30%;
@@ -39,24 +39,25 @@ button:active{
     color: #5c9eff;
 }
 /*/////////////////////////////////////EXERCISE//////////////*/
-.dragHolder, #controllers{
-    width: 30%;
-    padding:2%;
+.dragHolder, #controllers, #macros{
+    width: 27%;
+    padding:1%;
     margin-left:1%;
+    margin-bottom:10px;
     display: inline-block;
-    height: 200px;
+    height: 300px;
+    box-sizing: border-box;
+    float:left;
 }
-.dragHolder{
-    margin-top:20px;
-}
-#controllers{
-    width: 20%;
-    /*box-sizing: border-box;*/
+#containerCommand{
+    width:13%;
+    border-radius: 0 0 50px 0;
+    height: 130px;
 }
 [id ^="subject"]{
     height: 80px;
     width: 80px;
-    border-radius: 0;
+    /*border-radius: 0;*/
     border:1px solid white;
     float:left;
     margin:5px;
@@ -82,8 +83,9 @@ button:active{
 #controllers .range {
     width: 90%;
 }
-#macros{
-    width: 96%;
-    margin:10px 1%;
-    height: 100px;
-}
+/*#macros{*/
+    /*clear:left;*/
+    /*width: 97%;*/
+    /*margin:10px 1%;*/
+    /*height: 100px;*/
+/*}*/
