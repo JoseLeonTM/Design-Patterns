@@ -40,17 +40,17 @@ button:active{
 }
 /*/////////////////////////////////////EXERCISE//////////////*/
 .dragHolder, #controllers, #macros{
-    width: 27%;
+    width: 26%;
     padding:1%;
     margin-left:1%;
     margin-bottom:10px;
     display: inline-block;
-    height: 300px;
+    height: 310px;
     box-sizing: border-box;
     float:left;
 }
 #containerCommand{
-    width:13%;
+    width:14%;
     border-radius: 0 0 50px 0;
     height: 130px;
 }
@@ -75,6 +75,11 @@ button:active{
 }
 #controllers button{
     float:left;
+}
+[type="color"]{
+    padding:0;
+    border:none;
+    width: 30px;
 }
 #controllers input{
     display:block;
