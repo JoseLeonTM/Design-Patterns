@@ -57,8 +57,7 @@ button:active{
 [id ^="subject"]{
     height: 80px;
     width: 80px;
-    /*border-radius: 0;*/
-    border:1px solid white;
+    border-style: solid;
     float:left;
     margin:5px;
     text-align: center;
@@ -88,9 +87,6 @@ button:active{
 #controllers .range {
     width: 90%;
 }
-/*#macros{*/
-    /*clear:left;*/
-    /*width: 97%;*/
-    /*margin:10px 1%;*/
-    /*height: 100px;*/
-/*}*/
+#buttonDiv{
+    border-bottom: 3px solid white;
+}
