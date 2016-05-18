@@ -25,18 +25,18 @@ var Macros=(function(){
     function createMacro(e) {
         record.style.display = 'inline-block';
         create.style.display = 'none';
+        if(stored.length){
         var macro=document.createElement('button');
         macro.class='macro';
         macro.actions=[];
         macro.textContent=id++;
-        if(stored.length){
             while(stored.length){
                 macro.actions.push(stored.splice(0,1)[0]);
             }
+            macros.appendChild(macro);
+            options.selectAction(e);/////PASS THE EVENT TO SELECT ACTION TO STORE THE CREATION OF A MACRO
         }
-        macros.appendChild(macro);
         recording=false;
-        options.selectAction(e);/////PASS THE EVENT TO SELECT ACTION TO STORE THE CREATION OF A MACRO
     }
     function runMacro(e) {
         if(e.target.class=='macro'){

@@ -72,7 +72,7 @@ button:active{
 }
 #controllers label{
     float:left;
-    width: 1000%;
+    width: 100%;
 }
 #controllers button{
     float:left;
