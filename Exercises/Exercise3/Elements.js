@@ -1,8 +1,6 @@
 /**
  * Created by Jose Leon on 5/12/2016.
  */
-//define(['options'],function(options){
-//define(function(options){
 var elements=(function() {
     var controls = document.getElementById('controllers');//////A REFERENCE TO THE CONTROLLERS DIV////////////
     controls.addEventListener('click', options.selectAction, false);
