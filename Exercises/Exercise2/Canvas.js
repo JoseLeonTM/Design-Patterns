@@ -12,22 +12,28 @@ define(['Figures'],function(Figures){
 
     eventHolder.addEventListener('mousedown',clickDown,false);
     eventHolder.addEventListener('mousemove',clickDrag,false);
-    var body=document.querySelector('body');
-    body.addEventListener('mouseup',clickUp,false);
+    //var body=document.querySelector('body');
+    document.body.addEventListener('mouseup',clickUp,false);
 
     var drag=null; ////////////THE REFERENCE TO THE FIGURE THAT IS BEING DRAGGED
 
+
+    var chosenFigure; ////HOLDS THE VAlUE OF THE SELECTED FIGURE IN THE INTERFACE
+    chooseFigure();
+
     var figureBuilder={ ////////////THE OBJECT THAT WE USE TO BUILD THE RIGHT TYPE OF FIGURE
+<<<<<<< HEAD
         build:function(figure){
             return new this[figure];
+=======
+        build: function(x,y) {
+            return new this[chosenFigure](x,y);
+>>>>>>> Exercise3
         },
         rectangle:Figures.Rectangle,
         square:Figures.Square,
         circle:Figures.Circle
     };
-    var chosenFigure; ////HOLDS THE VAlUE OF THE SELECTED FIGURE IN THE INTERFACE
-    chooseFigure();
-
     var form=document.querySelector('form');/////////A REFERENCE TO THE INTERFACE FORM
     form.addEventListener('click',chooseFigure,false);
 
@@ -43,10 +49,17 @@ define(['Figures'],function(Figures){
         }
     }
     function newFigure(x,y){////////////////////////////RETURNS A NEW FIGURE/////////////////
+<<<<<<< HEAD
         var figure = figureBuilder.build(chosenFigure);
         figure.origX=x;
         figure.origY=y;
         return figure;
+=======
+        //var figure = figureBuilder.build(x,y);
+        //figure.origX=x;
+        //figure.origY=y;
+        return figureBuilder.build(x,y);
+>>>>>>> Exercise3
     }
     function checkForFigures(x,y){////////////////////RETURNS THE INDEX OF THE figures ARRAY IF THERE IS A FIGURE IN THE POSITION
         //var exists;
@@ -76,7 +89,7 @@ define(['Figures'],function(Figures){
             var y = e.pageY - (figureHolder.offsetTop - figureHolder.scrollTop);
             drag.origX=x;
             drag.origY=y;
-            dragC.clearRect(0,0,600,500);
+            dragC.clearRect(0,0,dragC.width,dragC.height);
             drag.draw(dragC);
             if(x>600 || x<0 || y>500 || y<0) {
                 dragC.clearRect(0, 0, 600, 500);
