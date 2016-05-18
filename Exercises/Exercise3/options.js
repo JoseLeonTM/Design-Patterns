@@ -2,9 +2,7 @@
  * Created by Jose Leon on 5/16/2016.
  */
 var options=(function(){
-
     var stored=[];///////WHERE EVERY CHANGE WILL BE STORED
-
     var cCommands=document.getElementById('containerCommand'); ///////////////CONTAINER COMMAND REFERENCE
     var cLeft=document.getElementById('containerLeft'); ///////////////CONTAINER COMMAND REFERENCE
     //////REFERENCE TO EVERY CONTROLLER
@@ -13,18 +11,19 @@ var options=(function(){
     var borderCOLOR=document.getElementById('borderColor');
     var backgroundCOLOR=document.getElementById('backgroundColor');
 
-
-
     function inEditor(){///////ADJUST THE CONTROL VALUES TO THE DIV VALUES
-        borderWIDTH.value=parseInt(cCommands.firstElementChild.style.borderWidth);
-        borderRADIUS.value=parseInt(cCommands.firstElementChild.style.borderRadius);
-        borderCOLOR.value=rgbToHex(cCommands.firstElementChild.style.borderColor);
-        backgroundCOLOR.value=rgbToHex(cCommands.firstElementChild.style.backgroundColor);
+        var element=cCommands.firstElementChild;
+        if(element) {
+            borderWIDTH.value = parseInt(element.style.borderWidth);
+            borderRADIUS.value = parseInt(element.style.borderRadius);
+            borderCOLOR.value = rgbToHex(element.style.borderColor);
+            backgroundCOLOR.value = rgbToHex(element.style.backgroundColor);
+        }
     }
-    document.getElementById('backgroundColor').addEventListener('input',fillColor,false);
-    document.getElementById('borderColor').addEventListener('input',fillColor,false);
+    document.getElementById('backgroundColor').addEventListener('change',fillColor,false);//MAKE THE COLOR INPUTS CHANGE THE DIVS
+    document.getElementById('borderColor').addEventListener('change',fillColor,false);
 
-    for(var i=0;i<cLeft.childElementCount;i++){
+    for(var i=0;i<cLeft.childElementCount;i++){//INITIALIZE THE VALUES FOR THE DIVS
         cLeft.children[i].style.borderWidth=1+"px";
         cLeft.children[i].style.borderRadius=0+'px';
         cLeft.children[i].style.borderColor='#FFFFFF';
@@ -44,11 +43,16 @@ var options=(function(){
         var element = cCommands.firstElementChild;
         if (element) {
             element.style[event.target.id] = event.target.value;
+            if(Macros.recording()){//////IF WE ARE RECORDING A MACRO STORE THE ACTION
+                Macros.actions.push({target:event.target, value:event.target.value});
+            }
         }
     }
     var changes = {
         drag: function (element) {
             stored.push({action: 'drag', element: element, change: element.parentNode});
+                //if (element.parentNode == stored[stored.length - 1].change) stored.pop();
+            //else
         },
         slide: function (event) {
             var element = cCommands.firstElementChild;
@@ -64,6 +68,9 @@ var options=(function(){
                 if (event.type == 'click') {////////CHECK THE VALUES AFTER THE CLICK IF UP
                     element.style[event.target.id] = event.target.value + "px";
                     if (event.target.value == stored[stored.length - 1].value) stored.pop(); /////REMOVED THE STORED DATA IF THE VALUE IS THE SAME
+                    if(Macros.recording()){//////IF WE ARE RECORDING A MACRO STORE THE ACTION
+                        Macros.actions.push({target:event.target, value:event.target.value});
+                    }
                 }
             }
         },
@@ -80,24 +87,48 @@ var options=(function(){
         },
         undo: function () {
             if (stored.length > 0) {
-                switch (stored[stored.length - 1].action) {
-                    case 'drag':
-                        undos.drag(stored.pop());
-                        break;
-                    case 'style':
-                        undos.style(stored.pop());
-                        break;
-                    case 'color':
-                        undos.color(stored.pop());
-                        break;
+                if(Macros.recording()){//////IF WE ARE RECORDING A MACRO STORE THE ACTION
+                    Macros.actions.push({target:stored[stored.length-1].change, value:stored[stored.length-1].value});
                 }
+                undos[stored[stored.length-1].action](stored.pop());
+            }
+        },
+        macroCreation:function(event){
+            stored.push({
+                action:'macroCreation',
+                change:Macros.macros.lastElementChild
+            });
+            ///////STORE CREATION OF MACROS
+        },
+        macro:function(event){
+            var element = cCommands.firstElementChild;
+            if (element) {
+                stored.push({
+                    action: 'macro',
+                    element: element,
+                    bRadius: element.style.borderRadius,
+                    bWidth: element.style.borderWidth,
+                    bColor: element.style.borderColor,
+                    backColor: element.style.backgroundColor
+                });
+                for(var i=0;i<event.actions.length;i++){
+                    var property=(event.actions[i].target.id);
+                    var value=(event.actions[i].value);
+                    if(property=='borderWidth' || property=='borderRadius') {
+                        element.style[property] = value+'px';
+                    }
+                    else {
+                        element.style[property] = value;
+                    }
+                }
+                inEditor();
             }
         }
     };
     var undos = {
         drag: function (change) {
             change.change.appendChild(change.element);
-            if (change.change == cCommands) inEditor();/////ADJUST THE CONTROLS TO THE VALUE OF THE ELEMENT IN THE EDITOR
+            //if (change.change == cCommands) inEditor();/////ADJUST THE CONTROLS TO THE VALUE OF THE ELEMENT IN THE EDITOR
         },
         style: function (change) {
             change.element.style[change.change.id] = change.value + "px";
@@ -107,17 +138,34 @@ var options=(function(){
             change.element.style[change.change.id] = change.value;
             change.change.value = change.value;
 
+        },
+        macroCreation:function(change){
+            change.change.parentNode.removeChild(change.change);
+        },
+        macro:function(change){
+            change.element.style.borderRadius=change.bRadius;
+            change.element.style.borderWidth=change.bWidth;
+            change.element.style.borderColor=change.bColor;
+            change.element.style.backgroundColor=change.backColor;
         }
     };
+    var dragREGEX=/subject[\d]/;
+    var macroREGEX=/^[\d]+/;
     return{
-        selectAction: function(e){
-            var divID = e.target.id.match(/subject[\d]+/) ? e.target.id.match(/subject[\d]+/)[0] : undefined;
+        cCommands:cCommands,
+        cLeft:cLeft,
+        selectAction: function(e){//THIS METHOD DECIDES WHAT TO EXECUTE BASED ON THE EVENT TARGET
+            var divID = e.target.id.match(dragREGEX) ? e.target.id.match(dragREGEX)[0] : undefined;
+            var macro= e.target.id.match(macroREGEX) ? e.target.id.match(macroREGEX)[0] : undefined;
             switch (e.target.id) {
                 case divID:
                     changes.drag(e.target);
                     break;
                 case 'undo':
-                    if (e.type == 'click') changes.undo();
+                    if (e.type == 'click') {
+                        changes.undo();
+                        inEditor();
+                    }
                     break;
                 case 'borderWidth':
                     changes.slide(e);
@@ -130,6 +178,12 @@ var options=(function(){
                     break;
                 case 'borderColor':
                     if (e.type == 'click') changes.color(e);
+                    break;
+                case 'create':
+                    if(e.type=='click') changes.macroCreation(e);
+                    break;
+                case macro:
+                    changes.macro(e);
             }
         },
         inEditor:inEditor
